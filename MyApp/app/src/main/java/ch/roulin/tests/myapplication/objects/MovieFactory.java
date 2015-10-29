@@ -18,33 +18,33 @@ import org.json.JSONObject;
  */
 public class MovieFactory {
 
-    public static Movie createFromId(Context context, String movieId){
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringBuilder queryUrl = new StringBuilder("http://api.themoviedb.org/3/movie/" + movieId+"/");
-        queryUrl.append("?api_key=");
-        queryUrl.append(Movie.API_KEY);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, queryUrl.toString(), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    return new Movie(new JSONObject(response));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("JEEZ", "Volley Error");
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
-    }
-
+//    public static Movie createFromId(Context context, String movieId) {
+//        RequestQueue queue = Volley.newRequestQueue(context);
+//        StringBuilder queryUrl = new StringBuilder("http://api.themoviedb.org/3/movie/" + movieId + "/");
+//        queryUrl.append("?api_key=");
+//        queryUrl.append(Movie.API_KEY);
+//
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, queryUrl.toString(), new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                try {
+//                    // nope
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("JEEZ", "Volley Error");
+//            }
+//        });
+//
+//        // Add the request to the RequestQueue.
+//        queue.add(stringRequest);
+//        return null;
+//
+//    }
 
 
 }
