@@ -5,4 +5,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Shakawatcha">
+
+    </style>
+    <style name="Shakawatcha.BigTitle"></style>
+
 </resources>
