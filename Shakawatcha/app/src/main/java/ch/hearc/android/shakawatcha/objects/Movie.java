@@ -27,6 +27,7 @@ public class Movie {
     public static final String TAG_VOTE_AVERAGE = "vote_average";
     public static final String TAG_JOB = "job";
     public static final String TAG_NAME = "name";
+    public static final String TAG_RESULTS = "results";
 
     private final int id;
     private final String title;

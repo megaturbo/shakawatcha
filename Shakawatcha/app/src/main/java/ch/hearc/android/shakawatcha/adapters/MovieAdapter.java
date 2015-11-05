@@ -1,4 +1,4 @@
-package ch.hearc.android.shakawatcha.fragments;
+package ch.hearc.android.shakawatcha.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-
 import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.objects.Movie;
 

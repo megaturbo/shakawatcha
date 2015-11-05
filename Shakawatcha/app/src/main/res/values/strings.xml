@@ -5,4 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="no_result_found">No result found</string>
     <string name="hello_user">We will show you what we got.</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Search...</string>
 </resources>
