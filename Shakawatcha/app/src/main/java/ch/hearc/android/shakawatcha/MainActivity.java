@@ -133,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentSearch.updateMovies(movies);
     }
 
+
+
     /**
      * Attach a new fragment to the view and detach the old one
      * @param TAG_NEW The new fragment to attach
