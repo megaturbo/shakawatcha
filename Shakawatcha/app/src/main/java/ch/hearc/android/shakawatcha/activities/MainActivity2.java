@@ -1,6 +1,10 @@
 package ch.hearc.android.shakawatcha.activities;
 
 import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -17,6 +21,11 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.github.tbouron.shakedetector.library.ShakeDetector;
+
+import java.util.concurrent.ExecutionException;
 
 import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.fragments.FragmentTitle;
@@ -34,8 +43,13 @@ public class MainActivity2 extends AppCompatActivity
      */
     private CharSequence mTitle;
 
+    /**
+     * Used to define the behaviour of the accelerometer;
+     */
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
@@ -47,15 +61,45 @@ public class MainActivity2 extends AppCompatActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        ShakeDetector.create(this, new ShakeDetector.OnShakeListener()
+        {
+            @Override
+            public void OnShake()
+            {
+                Toast.makeText(getApplicationContext(), "Device shaken!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    protected void onResume() {
+        super.onResume();
+        ShakeDetector.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ShakeDetector.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ShakeDetector.destroy();
+    }
+
+    @Override
+    public void onNavigationDrawerItemSelected(int position)
+    {
 
         Fragment fragment;
-        if(position == 0){
+        if (position == 0)
+        {
             fragment = FragmentTitle.newInstance();
-        }else{
+        } else
+        {
             fragment = PlaceholderFragment.newInstance(position + 1);
         }
         // update the main content by replacing fragments
@@ -65,8 +109,10 @@ public class MainActivity2 extends AppCompatActivity
                 .commit();
     }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
+    public void onSectionAttached(int number)
+    {
+        switch (number)
+        {
             case 1:
                 mTitle = getString(R.string.title_section1);
                 break;
@@ -79,7 +125,8 @@ public class MainActivity2 extends AppCompatActivity
         }
     }
 
-    public void restoreActionBar() {
+    public void restoreActionBar()
+    {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -88,8 +135,10 @@ public class MainActivity2 extends AppCompatActivity
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        if (!mNavigationDrawerFragment.isDrawerOpen())
+        {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
@@ -101,14 +150,16 @@ public class MainActivity2 extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
             return true;
         }
 
@@ -118,7 +169,8 @@ public class MainActivity2 extends AppCompatActivity
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment
+    {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -129,7 +181,8 @@ public class MainActivity2 extends AppCompatActivity
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int sectionNumber)
+        {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -137,18 +190,21 @@ public class MainActivity2 extends AppCompatActivity
             return fragment;
         }
 
-        public PlaceholderFragment() {
+        public PlaceholderFragment()
+        {
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+                Bundle savedInstanceState)
+        {
             View rootView = inflater.inflate(R.layout.fragment_main_activity2, container, false);
             return rootView;
         }
 
         @Override
-        public void onAttach(Activity activity) {
+        public void onAttach(Activity activity)
+        {
             super.onAttach(activity);
             ((MainActivity2) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
