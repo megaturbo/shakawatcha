@@ -12,10 +12,16 @@ import ch.hearc.android.shakawatcha.R;
  * Created by thomas.roulin on 05.11.2015.
  */
 public class FragmentTitle extends Fragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_title, container, false);
+    }
+
+    public static FragmentTitle newInstance() {
+        FragmentTitle fragmentTitle = new FragmentTitle();
+        return fragmentTitle;
     }
 }

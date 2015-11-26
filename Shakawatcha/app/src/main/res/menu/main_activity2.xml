@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:shakawatcha="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ch.hearc.android.shakawatcha.activities.MainActivity2">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/action_search"
+        shakawatcha:actionViewClass="android.support.v7.widget.SearchView"
+        shakawatcha:showAsAction="collapseActionView|ifRoom" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        shakawatcha:showAsAction="never" />
+</menu>

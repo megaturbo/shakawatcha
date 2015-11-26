@@ -1,18 +1,14 @@
-package ch.hearc.android.shakawatcha;
+package ch.hearc.android.shakawatcha.activities;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,8 +23,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.fragments.FragmentSearch;
 import ch.hearc.android.shakawatcha.fragments.FragmentTitle;
+import ch.hearc.android.shakawatcha.fragments.movies.FragmentMovie;
 import ch.hearc.android.shakawatcha.objects.Movie;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentTitle fragmentTitle = new FragmentTitle();
     private FragmentSearch fragmentSearch = new FragmentSearch();
+    private FragmentMovie fragmentMovie = new FragmentMovie();
 
     private static final String TAG_TITLE = "TITLE";
     private static final String TAG_SEARCH = "SEARCH";
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         // TMDB Request
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         StringBuilder queryUrl = new StringBuilder("http://api.themoviedb.org/3/search/movie");
-        queryUrl.append("?api_key=");
+            queryUrl.append("?api_key=");
         queryUrl.append(Movie.API_KEY);
         queryUrl.append("&query=");
         queryUrl.append(query.replace(" ", "+"));
@@ -146,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         if (TAG_NEW == TAG_TITLE) {
             ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.replace(R.id.framelayout_main, fragmentTitle);
-        } else {
+        } else if (TAG_NEW == TAG_SEARCH){
             ft.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             ft.replace(R.id.framelayout_main, fragmentSearch);
         }
@@ -156,5 +155,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Commit changes.
         ft.commit();
+    }
+
+    public void showMovie(int id){
+
+        fragmentMovie.setMovie(id);
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.framelayout_main, fragmentMovie)
+                .commit();
     }
 }
