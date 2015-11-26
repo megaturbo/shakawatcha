@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:shakawatcha="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="ch.hearc.android.shakawatcha.activities.MainActivity2">
+    tools:context="ch.hearc.android.shakawatcha.activities.MainActivity">
 
     <item
         android:id="@+id/search"
