@@ -9,4 +9,6 @@
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="movie_banner_height">200dp</dimen>
+    <dimen name="movie_poster_width">120dp</dimen>
+    <dimen name="movie_title">25sp</dimen>
 </resources>

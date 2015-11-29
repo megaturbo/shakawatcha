@@ -3,6 +3,7 @@ package ch.hearc.android.shakawatcha.fragments.movies;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.objects.Movie;
+import ch.hearc.android.shakawatcha.objects.Person.Crew;
 
 /**
  * Created by thomas.roulin on 12.11.2015.
@@ -34,6 +39,7 @@ public class FragmentMovie extends Fragment {
     private ImageView ivPoster;
     private TextView tvTitle;
     private TextView tvReleaseDate;
+    private TextView tvDirector;
 
     private Movie movie;
     private String movieTitle;
@@ -59,13 +65,14 @@ public class FragmentMovie extends Fragment {
         ivBackdrop = (ImageView) getActivity().findViewById(R.id.movie_backdrop);
         ivPoster = (ImageView) getActivity().findViewById(R.id.movie_poster);
         tvTitle = (TextView) getActivity().findViewById(R.id.movie_title);
-        tvReleaseDate = (TextView)getActivity().findViewById(R.id.movie_release_date);
+        tvReleaseDate = (TextView) getActivity().findViewById(R.id.movie_release_date);
+        tvDirector = (TextView) getActivity().findViewById(R.id.movie_director);
 
         tvTitle.setText(this.movieTitle);
 
-        queueMovieRequest(this.movieId);
-        queueMovieBackdrop(this.movieId);
+        init();
     }
+
 
     public static FragmentMovie newInstance(String movieTitle, int movieId) {
         FragmentMovie fragmentMovie = new FragmentMovie();
@@ -78,7 +85,40 @@ public class FragmentMovie extends Fragment {
         return fragmentMovie;
     }
 
-    public void queueMovieRequest(int id) {
+    private void init() {
+        requestMovie(this.movieId);
+        requestMovieBackdrop(this.movieId);
+    }
+
+    /**
+     *                  REQUEST
+     */
+
+    private void requestMovieCredits(int movieId) {
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        String query = "http://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=" + Movie.API_KEY;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, query, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    showCredits(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("JEEZ", "Volley Error");
+            }
+        });
+
+        queue.add(stringRequest);
+    }
+
+
+
+    private void requestMovie(int id) {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String query = "http://api.themoviedb.org/3/movie/" + id + "?api_key=" + Movie.API_KEY;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, query, new Response.Listener<String>() {
@@ -100,7 +140,7 @@ public class FragmentMovie extends Fragment {
         queue.add(stringRequest);
     }
 
-    public void queueMovieBackdrop(int id){
+    private void requestMovieBackdrop(int id) {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String query = "http://api.themoviedb.org/3/movie/" + id + "/images?api_key=" + Movie.API_KEY;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, query, new Response.Listener<String>() {
@@ -122,18 +162,35 @@ public class FragmentMovie extends Fragment {
         queue.add(stringRequest);
     }
 
+    /**
+     *                  SHOW
+     */
+
+    private void showCredits(String response) throws JSONException {
+        JSONObject creditsJSON = new JSONObject(response);
+
+        JSONArray castJSON = creditsJSON.getJSONArray(Movie.TAG_CAST);
+        JSONArray crewJSON = creditsJSON.getJSONArray(Movie.TAG_CREW);
+
+        movie.setCast(castJSON);
+        movie.setCrew(crewJSON);
+
+        tvDirector.setText(Html.fromHtml("<b>Director : </b>" + movie.getCrewMember(Crew.TAG_JOB_DIRECTOR).getName()));
+    }
+
     private void showBackdrop(String response) throws JSONException {
         JSONObject imagesJSON = new JSONObject(response);
-        JSONArray backdropsJSON = imagesJSON.getJSONArray("backdrops");
-        String backdropPath = backdropsJSON.getJSONObject(0).getString("file_path");
+        JSONArray backdropsJSON = imagesJSON.getJSONArray(Movie.TAG_BACKDROPS);
+        String backdropPath = backdropsJSON.getJSONObject(0).getString(Movie.TAG_FILEPATH);
 
         Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w1280" + backdropPath).into(ivBackdrop);
     }
 
     private void showMovie(String response) throws JSONException {
-        Movie movie = new Movie(new JSONObject(response));
+        movie = new Movie(new JSONObject(response));
+        requestMovieCredits(this.movieId);
 
-        tvReleaseDate.setText(movie.getReleaseDate());
+        tvReleaseDate.setText(Html.fromHtml("<b>Release : </b>" + movie.getReleaseDate()));
 
 
         String posterPath = movie.getPosterPath();

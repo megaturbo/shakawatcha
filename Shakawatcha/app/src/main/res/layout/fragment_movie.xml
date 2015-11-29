@@ -6,6 +6,7 @@
     <!-- Backdrop poster -->
     <ImageView
         android:id="@+id/movie_backdrop"
+        style="@style/Shakawatcha.Movie.Backdrop"
         android:layout_width="match_parent"
         android:layout_height="@dimen/movie_banner_height"
         android:layout_alignParentStart="true"
@@ -37,6 +38,12 @@
                 android:id="@+id/movie_release_date"
                 style="@style/Shakawatcha.Movie.Text"
                 android:layout_below="@id/movie_title" />
+
+            <TextView
+                android:id="@+id/movie_director"
+                style="@style/Shakawatcha.Movie.Text"
+                android:layout_below="@id/movie_release_date" />
+
 
         </RelativeLayout>
 

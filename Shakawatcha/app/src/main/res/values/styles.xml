@@ -18,6 +18,8 @@
 
     <style name="Shakawatcha.Movie"></style>
 
+    <style name="Shakawatcha.Movie.Backdrop"></style>
+
     <style name="Shakawatcha.Movie.Poster">
         <item name="android:layout_marginEnd">20dp</item>
         <item name="android:layout_width">@dimen/movie_poster_width</item>
@@ -25,20 +27,22 @@
     </style>
 
     <style name="Shakawatcha.Movie.Banner">
+        <item name="android:background">@color/black_transparent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/movie_banner_height</item>
-        <item name="android:background">@color/black_transparent</item>
         <item name="android:padding">15dp</item>
     </style>
 
     <style name="Shakawatcha.Movie.Text">
+        <item name="android:textColor">@color/light_gray</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Shakawatcha.Movie.Text.Title">
+        <item name="android:textSize">@dimen/movie_title</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">5dp</item>
     </style>
-
-    <dimen name="movie_poster_width">120dp</dimen>
 </resources>
