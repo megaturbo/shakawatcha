@@ -8,6 +8,7 @@
     <style name="Shakawatcha">
 
     </style>
+
     <style name="Shakawatcha.BigTitle">
         <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:textSize">50sp</item>
@@ -15,4 +16,29 @@
         <item name="android:layout_margin">20dp</item>
     </style>
 
+    <style name="Shakawatcha.Movie"></style>
+
+    <style name="Shakawatcha.Movie.Poster">
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_width">@dimen/movie_poster_width</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="Shakawatcha.Movie.Banner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/movie_banner_height</item>
+        <item name="android:background">@color/black_transparent</item>
+        <item name="android:padding">15dp</item>
+    </style>
+
+    <style name="Shakawatcha.Movie.Text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Shakawatcha.Movie.Text.Title">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <dimen name="movie_poster_width">120dp</dimen>
 </resources>

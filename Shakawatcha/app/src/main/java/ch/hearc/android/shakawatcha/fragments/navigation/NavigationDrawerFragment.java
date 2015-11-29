@@ -1,4 +1,4 @@
-package ch.hearc.android.shakawatcha.activities;
+package ch.hearc.android.shakawatcha.fragments.navigation;
 
 import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;

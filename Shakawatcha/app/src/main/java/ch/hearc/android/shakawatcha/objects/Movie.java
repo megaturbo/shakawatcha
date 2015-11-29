@@ -48,48 +48,6 @@ public class Movie {
         return title + "  - (" + releaseDate.split("-")[0] + ")";
     }
 
-    public String getNameByJob(Context context, final String job) {
-
-        final String[] name = new String[1];
-
-        // TMDB Request
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringBuilder queryUrl = new StringBuilder("http://api.themoviedb.org/3/movie/");
-        queryUrl.append(String.valueOf(id));
-        queryUrl.append("/credits");
-        queryUrl.append("?api_key=");
-        queryUrl.append(Movie.API_KEY);
-        Log.d("JEEZ", queryUrl.toString());
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, queryUrl.toString(), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject credits = new JSONObject(response);
-                    JSONArray crew = credits.getJSONArray("crew");
-                    JSONObject crewMember;
-                    for (int i = 0; i < crew.length(); i++) {
-                        crewMember = crew.getJSONObject(i);
-                        if (crewMember.getString(TAG_JOB) == job) {
-                            name[0] = crewMember.getString(TAG_NAME);
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("JEEZ", "Volley Error");
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-
-        return name[0];
-    }
-
     public double getVoteAverage() {
         return voteAverage;
     }

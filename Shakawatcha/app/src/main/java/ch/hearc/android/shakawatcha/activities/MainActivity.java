@@ -32,6 +32,7 @@ import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.fragments.FragmentSearch;
 import ch.hearc.android.shakawatcha.fragments.FragmentHome;
 import ch.hearc.android.shakawatcha.fragments.movies.FragmentMovie;
+import ch.hearc.android.shakawatcha.fragments.navigation.NavigationDrawerFragment;
 import ch.hearc.android.shakawatcha.objects.Movie;
 
 public class MainActivity extends AppCompatActivity
@@ -52,8 +53,9 @@ public class MainActivity extends AppCompatActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    private String TAG_HOME = "HOME";
-    private String TAG_SEARCH = "SEARCH";
+    private static final String TAG_HOME = "HOME";
+    private static final String TAG_SEARCH = "SEARCH";
+    private static final String TAG_MOVIE = "MOVIE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,13 +130,23 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public boolean onQueryTextChange(String query) {
                     if (query.length() > 2) {
+                        /**
+                         * If the query is long enough, show SearchFragment and process the query
+                         */
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, FragmentSearch.newInstance(), TAG_SEARCH)
                                 .commit();
                         searchMovie(query);
                     } else {
-                        onNavigationDrawerItemSelected(mNavigationDrawerFragment.getCurrentSelectedPosition());
+
+                        /**
+                         *
+                         */
+//                        FragmentMovie fragmentMovie = (FragmentMovie) getSupportFragmentManager().findFragmentByTag(TAG_MOVIE);
+//                        if(!fragmentMovie.isVisible()){
+//                            onNavigationDrawerItemSelected(mNavigationDrawerFragment.getCurrentSelectedPosition());
+//                        }
                     }
                     return false;
                 }
@@ -228,6 +240,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+
     private void searchMovie(String query) {
 
         if (query.length() == 0) {
@@ -269,7 +283,7 @@ public class MainActivity extends AppCompatActivity
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, fragmentMovie)
+                .replace(R.id.container, fragmentMovie, TAG_MOVIE)
                 .commit();
     }
 
