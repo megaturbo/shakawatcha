@@ -14,6 +14,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/movie_layout_banner"
         style="@style/Shakawatcha.Movie.Banner"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
@@ -44,9 +45,33 @@
                 style="@style/Shakawatcha.Movie.Text"
                 android:layout_below="@id/movie_release_date" />
 
+            <TextView
+                android:id="@+id/movie_writer"
+                style="@style/Shakawatcha.Movie.Text"
+                android:layout_below="@id/movie_director"/>
+
+            <TextView
+                android:id="@+id/movie_cast"
+                android:layout_marginTop="10dp"
+                style="@style/Shakawatcha.Movie.Text"
+                android:layout_below="@id/movie_writer" />
+
 
         </RelativeLayout>
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/movie_layout_banner"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/movie_overview"
+            style="@style/Shakawatcha.Movie.Text" />
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

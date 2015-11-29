@@ -23,11 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.objects.Movie;
+import ch.hearc.android.shakawatcha.objects.Person.Actor;
 import ch.hearc.android.shakawatcha.objects.Person.Crew;
 
 /**
@@ -40,6 +40,9 @@ public class FragmentMovie extends Fragment {
     private TextView tvTitle;
     private TextView tvReleaseDate;
     private TextView tvDirector;
+    private TextView tvWriter;
+    private TextView tvCast;
+    private TextView tvOverview;
 
     private Movie movie;
     private String movieTitle;
@@ -67,6 +70,9 @@ public class FragmentMovie extends Fragment {
         tvTitle = (TextView) getActivity().findViewById(R.id.movie_title);
         tvReleaseDate = (TextView) getActivity().findViewById(R.id.movie_release_date);
         tvDirector = (TextView) getActivity().findViewById(R.id.movie_director);
+        tvWriter = (TextView)getActivity().findViewById(R.id.movie_writer);
+        tvCast = (TextView)getActivity().findViewById(R.id.movie_cast);
+        tvOverview = (TextView)getActivity().findViewById(R.id.movie_overview);
 
         tvTitle.setText(this.movieTitle);
 
@@ -101,6 +107,7 @@ public class FragmentMovie extends Fragment {
             @Override
             public void onResponse(String response) {
                 try {
+                    Log.d("YOLO", response);
                     showCredits(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -172,10 +179,23 @@ public class FragmentMovie extends Fragment {
         JSONArray castJSON = creditsJSON.getJSONArray(Movie.TAG_CAST);
         JSONArray crewJSON = creditsJSON.getJSONArray(Movie.TAG_CREW);
 
-        movie.setCast(castJSON);
+        List<Actor> cast = movie.setCast(castJSON);
         movie.setCrew(crewJSON);
 
-        tvDirector.setText(Html.fromHtml("<b>Director : </b>" + movie.getCrewMember(Crew.TAG_JOB_DIRECTOR).getName()));
+        List<Crew> directors = movie.getDepartment(Crew.TAG_DEPARTMENT_DIRECTING);
+        List<Crew> writers = movie.getDepartment(Crew.TAG_DEPARTMENT_WRITING);
+
+        if(directors.size() > 0){
+            tvDirector.setText(Html.fromHtml("<b>Director: </b>" + directors.get(0).getName()));
+        }
+
+        if(writers.size() > 0){
+            tvWriter.setText(Html.fromHtml("<b>Writer: </b>" + writers.get(0).getName()));
+        }
+
+
+        tvCast.setText(Html.fromHtml("<b>Stars: </b>" + cast.get(0).getName() + ", " + cast.get(1).getName()+", " + cast.get(2).getName()));
+
     }
 
     private void showBackdrop(String response) throws JSONException {
@@ -190,7 +210,8 @@ public class FragmentMovie extends Fragment {
         movie = new Movie(new JSONObject(response));
         requestMovieCredits(this.movieId);
 
-        tvReleaseDate.setText(Html.fromHtml("<b>Release : </b>" + movie.getReleaseDate()));
+        tvReleaseDate.setText(Html.fromHtml("<b>Release: </b>" + movie.getReleaseDate()));
+        tvOverview.setText(movie.getOverview());
 
 
         String posterPath = movie.getPosterPath();

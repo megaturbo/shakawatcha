@@ -39,6 +39,7 @@ public class Movie {
     public static final String TAG_CREW = "crew";
     public static final String TAG_BACKDROPS = "backdrops";
     public static final String TAG_FILEPATH = "file_path";
+    public static final String TAG_OVERVIEW = "overview";
 
     /**
      * Movie attributes
@@ -47,6 +48,7 @@ public class Movie {
     private final String title;
     private final String releaseDate;
     private final String posterPath;
+    private final String overview;
     private final double voteAverage;
 
     private List<Actor> cast;
@@ -58,6 +60,7 @@ public class Movie {
         this.title = movieJSON.getString(TAG_TITLE);
         this.releaseDate = movieJSON.getString(TAG_RELEASE_DATE);
         this.posterPath = movieJSON.getString(TAG_POSTER_PATH);
+        this.overview = movieJSON.getString(TAG_OVERVIEW);
         this.voteAverage = movieJSON.getDouble(TAG_VOTE_AVERAGE);
         this.cast = new ArrayList<>();
         this.crew = new ArrayList<>();
@@ -67,16 +70,18 @@ public class Movie {
      * SETTERS
      */
 
-    public void setCast(JSONArray castJSON) throws JSONException {
+    public List<Actor> setCast(JSONArray castJSON) throws JSONException {
         for (int i = 0; i < castJSON.length(); i++) {
             this.cast.add(new Actor(castJSON.getJSONObject(i)));
         }
+        return this.cast;
     }
 
-    public void setCrew(JSONArray crewJSON) throws JSONException {
+    public List<Crew> setCrew(JSONArray crewJSON) throws JSONException {
         for (int i = 0; i < crewJSON.length(); i++) {
             this.crew.add(new Crew(crewJSON.getJSONObject(i)));
         }
+        return this.crew;
     }
 
     /**
@@ -94,13 +99,14 @@ public class Movie {
     /**
      * GETTERS
      */
-    public Crew getCrewMember(String job) {
+    public List<Crew> getDepartment(String department) {
+        List<Crew> crew = new ArrayList<>();
         for (Crew c : this.crew) {
-            if (c.getJob().equals(job)) {
-                return c;
+            if (c.getDepartment().equals(department)) {
+                crew.add(c);
             }
         }
-        return null;
+        return crew;
     }
 
     public List<Crew> getCrew() {
@@ -129,6 +135,10 @@ public class Movie {
 
     public String getPosterPath() {
         return posterPath;
+    }
+
+    public String getOverview() {
+        return overview;
     }
 
     public String getReleaseYear() {

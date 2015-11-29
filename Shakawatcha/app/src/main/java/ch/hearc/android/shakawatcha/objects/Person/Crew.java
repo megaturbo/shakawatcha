@@ -14,8 +14,8 @@ public class Crew {
     public static final String TAG_NAME = "name";
     public static final String TAG_PROFILE_PATH = "profile_path";
 
-    public static final String TAG_JOB_DIRECTOR = "Director";
-    public static final String TAG_JOB_NOVEL = "Novel";
+    public static final String TAG_DEPARTMENT_DIRECTING = "Directing";
+    public static final String TAG_DEPARTMENT_WRITING = "Writing";
 
 
     private final int id;
