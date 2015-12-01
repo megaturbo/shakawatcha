@@ -1,16 +1,24 @@
 package ch.hearc.android.shakawatcha.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.activities.MainActivity;
+import ch.hearc.android.shakawatcha.objects.utils.MovieList;
+import ch.hearc.android.shakawatcha.objects.utils.UserLists;
 
 /**
  * Created by thomas.roulin on 30.11.2015.
@@ -31,9 +39,16 @@ public class FragmentNewList extends Fragment {
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Create MovieList
+                EditText editText = (EditText)getActivity().findViewById(R.id.newlist_edittext);
+
+                SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                ArrayList<MovieList> userLists = UserLists.retrieve(sharedPreferences);
+                userLists.add(new MovieList(editText.getText().toString()));
+                UserLists.save(userLists, sharedPreferences);
             }
         });
+
+        TextView textView = (TextView)getActivity().findViewById(R.id.newlist_title);
     }
 
     @Override

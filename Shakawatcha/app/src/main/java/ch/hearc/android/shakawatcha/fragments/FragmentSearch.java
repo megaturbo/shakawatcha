@@ -1,7 +1,6 @@
 package ch.hearc.android.shakawatcha.fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -16,8 +15,9 @@ import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.activities.MainActivity;
 import ch.hearc.android.shakawatcha.adapters.MovieAdapter;
 import ch.hearc.android.shakawatcha.objects.Movie;
-import ch.hearc.android.shakawatcha.objects.MovieList;
-import ch.hearc.android.shakawatcha.objects.SimpleMovie;
+import ch.hearc.android.shakawatcha.objects.utils.MovieList;
+import ch.hearc.android.shakawatcha.objects.utils.SimpleMovie;
+import ch.hearc.android.shakawatcha.objects.utils.UserLists;
 
 /**
  * Created by thomas.roulin on 11.10.2015.
@@ -44,9 +44,13 @@ public class FragmentSearch extends ListFragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // wat
                 ArrayList<SimpleMovie> simpleMovies = SimpleMovie.convert(movies);
-                MovieList.save(simpleMovies);
-                ;
+                ArrayList<MovieList> userList = new ArrayList<>();
+                userList.add(new MovieList("Cool list", simpleMovies));
+                userList.add(new MovieList("Better list", simpleMovies));
+                UserLists.save(userList, getActivity().getPreferences(Context.MODE_PRIVATE));
 
                 Movie clickedMovie = movies.get(position);
                 ((MainActivity)getActivity()).showMovie(clickedMovie.getTitle(), clickedMovie.getId());

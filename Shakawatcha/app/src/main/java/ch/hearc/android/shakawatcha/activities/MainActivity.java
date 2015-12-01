@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity
             case 1:
                 fragment = FragmentNewList.newInstance("New list");
                 tag = TAG_NEW_LIST;
-                Log.d("YOLO", TAG_NEW_LIST);
                 break;
             default:
                 fragment = PlaceholderFragment.newInstance(position + 1);

@@ -107,7 +107,6 @@ public class FragmentMovie extends Fragment {
             @Override
             public void onResponse(String response) {
                 try {
-                    Log.d("YOLO", response);
                     showCredits(response);
                 } catch (JSONException e) {
                     e.printStackTrace();
