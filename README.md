@@ -1,5 +1,15 @@
 # shakawatcha
-Shake it and watch it
+Shakawatcha offers you to create and manage movie lists. Aaaaand...
 
-# Rules
-1. Pun the shit out of these commits.
+#You are bored ? 
+You don't know what movie to watch ? 
+Let us chose for you !
+
+##Just a shake and you can get:
+- A random _Tom Cruise_ movie;
+- A random movie from 2001;
+- A random movie from one of your list.
+
+###That's what you need, fellow user !
+
+Sincerely, your Shakawatcha Team [_Crumble_Z_, _ikonoklast_]
