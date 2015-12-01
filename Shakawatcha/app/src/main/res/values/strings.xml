@@ -21,4 +21,8 @@
     <string name="action_example">Example action</string>
     <string name="movie_placeholder_title">Title</string>
     <string name="movie_placeholder_release_date">1970-01-01</string>
+    <string name="create_new_list">Create a new movie list</string>
+    <string name="newlist_input_hint">Choose wisely your list name</string>
+    <string name="create">Create</string>
+    <string name="new_list">New List</string>
 </resources>

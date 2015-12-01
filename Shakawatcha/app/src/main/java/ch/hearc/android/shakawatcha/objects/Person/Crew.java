@@ -24,12 +24,18 @@ public class Crew {
     private final String name;
     private final String profilePath;
 
-    public Crew(JSONObject actorJSON) throws JSONException {
-        this.id = actorJSON.getInt(TAG_ID);
-        this.department = actorJSON.getString(TAG_DEPARTMENT);
-        this.job = actorJSON.getString(TAG_JOB);
-        this.name = actorJSON.getString(TAG_NAME);
-        this.profilePath = actorJSON.getString(TAG_PROFILE_PATH);
+    /**
+     * Crew object is for a Crew member
+     *
+     * @param crewJSON The TMdB JSON Crew member
+     * @throws JSONException Make someone else works for me
+     */
+    public Crew(JSONObject crewJSON) throws JSONException {
+        this.id = crewJSON.getInt(TAG_ID);
+        this.department = crewJSON.getString(TAG_DEPARTMENT);
+        this.job = crewJSON.getString(TAG_JOB);
+        this.name = crewJSON.getString(TAG_NAME);
+        this.profilePath = crewJSON.getString(TAG_PROFILE_PATH);
     }
 
     public int getId() {

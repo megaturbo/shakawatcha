@@ -32,7 +32,8 @@ public class Movie {
     public static final String TAG_ID = "id";
     public static final String TAG_TITLE = "title";
     public static final String TAG_RELEASE_DATE = "release_date";
-    public static final String TAG_POSTER_PATH = "poster_path";
+    public static final String TAG_POSTER_PATH = "poster_path";;
+    public static final String TAG_BACKDROP_PATH = "backdrop_path";
     public static final String TAG_VOTE_AVERAGE = "vote_average";
     public static final String TAG_RESULTS = "results";
     public static final String TAG_CAST = "cast";
@@ -48,6 +49,7 @@ public class Movie {
     private final String title;
     private final String releaseDate;
     private final String posterPath;
+    private final String backdropPath;
     private final String overview;
     private final double voteAverage;
 
@@ -60,6 +62,7 @@ public class Movie {
         this.title = movieJSON.getString(TAG_TITLE);
         this.releaseDate = movieJSON.getString(TAG_RELEASE_DATE);
         this.posterPath = movieJSON.getString(TAG_POSTER_PATH);
+        this.backdropPath = movieJSON.getString(TAG_BACKDROP_PATH);
         this.overview = movieJSON.getString(TAG_OVERVIEW);
         this.voteAverage = movieJSON.getDouble(TAG_VOTE_AVERAGE);
         this.cast = new ArrayList<>();

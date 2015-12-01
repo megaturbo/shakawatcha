@@ -193,7 +193,7 @@ public class FragmentMovie extends Fragment {
             tvWriter.setText(Html.fromHtml("<b>Writer: </b>" + writers.get(0).getName()));
         }
 
-
+        //TODO improve and check cast size
         tvCast.setText(Html.fromHtml("<b>Stars: </b>" + cast.get(0).getName() + ", " + cast.get(1).getName()+", " + cast.get(2).getName()));
 
     }

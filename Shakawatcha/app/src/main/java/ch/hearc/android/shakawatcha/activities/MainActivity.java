@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import ch.hearc.android.shakawatcha.R;
+import ch.hearc.android.shakawatcha.fragments.FragmentNewList;
 import ch.hearc.android.shakawatcha.fragments.FragmentSearch;
 import ch.hearc.android.shakawatcha.fragments.FragmentHome;
 import ch.hearc.android.shakawatcha.fragments.movies.FragmentMovie;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity
      */
     private CharSequence mTitle;
     private static final String TAG_HOME = "HOME";
+    private static final String TAG_NEW_LIST = "NEWLIST";
     private static final String TAG_SEARCH = "SEARCH";
     private static final String TAG_MOVIE = "MOVIE";
 
@@ -82,6 +84,11 @@ public class MainActivity extends AppCompatActivity
             case 0:
                 fragment = FragmentHome.newInstance("Shakawatcha");
                 tag = TAG_HOME;
+                break;
+            case 1:
+                fragment = FragmentNewList.newInstance("New list");
+                tag = TAG_NEW_LIST;
+                Log.d("YOLO", TAG_NEW_LIST);
                 break;
             default:
                 fragment = PlaceholderFragment.newInstance(position + 1);

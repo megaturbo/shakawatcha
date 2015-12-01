@@ -1,5 +1,7 @@
 package ch.hearc.android.shakawatcha.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -14,6 +16,8 @@ import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.activities.MainActivity;
 import ch.hearc.android.shakawatcha.adapters.MovieAdapter;
 import ch.hearc.android.shakawatcha.objects.Movie;
+import ch.hearc.android.shakawatcha.objects.MovieList;
+import ch.hearc.android.shakawatcha.objects.SimpleMovie;
 
 /**
  * Created by thomas.roulin on 11.10.2015.
@@ -40,6 +44,10 @@ public class FragmentSearch extends ListFragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<SimpleMovie> simpleMovies = SimpleMovie.convert(movies);
+                MovieList.save(simpleMovies);
+                ;
+
                 Movie clickedMovie = movies.get(position);
                 ((MainActivity)getActivity()).showMovie(clickedMovie.getTitle(), clickedMovie.getId());
             }

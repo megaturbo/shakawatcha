@@ -21,6 +21,12 @@ public class Actor {
     private final String name;
     private final String profilePath;
 
+    /**
+     * Looks like an Actor, a person. Working in movie, y'know.
+     *
+     * @param actorJSON
+     * @throws JSONException
+     */
     public Actor(JSONObject actorJSON) throws JSONException {
         this.id = actorJSON.getInt(TAG_ID);
         this.character = actorJSON.getString(TAG_CHARACTER);
