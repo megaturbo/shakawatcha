@@ -8,7 +8,8 @@ Let us chose for you !
 ##Just a shake and you can get:
 - A random _Tom Cruise_ movie;
 - A random movie from 2001;
-- A random movie from one of your list.
+- A random movie from one of your list;
+- Whatever you want !
 
 ###That's what you need, fellow user !
 
