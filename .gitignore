@@ -10,7 +10,7 @@
 
 # Android Studio
 *.iml
-*.idea
+*.idea/*
 
 # Generated files
 bin/
