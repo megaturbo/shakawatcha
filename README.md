@@ -9,7 +9,7 @@ Let us chose for you !
 - A random _Tom Cruise_ movie;
 - A random movie from 2001;
 - A random movie from one of your list;
-- Whatever you want !
+- Whatever you want ! (Except coffee.... We don't do cofee)
 
 ###That's what you need, fellow user !
 
