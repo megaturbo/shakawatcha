@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import ch.hearc.android.shakawatcha.R;
+import ch.hearc.android.shakawatcha.activities.MainActivity;
 import ch.hearc.android.shakawatcha.objects.Movie;
 import ch.hearc.android.shakawatcha.objects.Person.Actor;
 import ch.hearc.android.shakawatcha.objects.Person.Crew;
@@ -50,6 +52,7 @@ public class FragmentMovie extends Fragment {
 
     public static final String ARG_TITLE = "TITLE";
     public static final String ARG_ID = "ID";
+    public static final String NO_DESCRIPTION = "No Oveview.";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -101,7 +104,14 @@ public class FragmentMovie extends Fragment {
      */
 
     private void requestMovieCredits(int movieId) {
+        System.out.println("========== BEFORE THE QUEUE ==========");
+        System.out.println(getActivity().toString());
+        System.out.println("==========  AFTER THE QUEUE ==========");
+
         RequestQueue queue = Volley.newRequestQueue(getActivity());
+
+
+
         String query = "http://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=" + Movie.API_KEY;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, query, new Response.Listener<String>() {
             @Override
@@ -115,7 +125,7 @@ public class FragmentMovie extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("JEEZ", "Volley Error");
+                Log.d("JEEZ", "Volley Error in FragmentMovie/requestMovieCredits");
             }
         });
 
@@ -139,7 +149,8 @@ public class FragmentMovie extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("JEEZ", "Volley Error");
+                ((MainActivity)getActivity()).searchRandomMovie();
+                Log.d("JEEZ", "Volley Error in FragmentMovie/requestMovie");
             }
         });
 
@@ -161,7 +172,7 @@ public class FragmentMovie extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("JEEZ", "Volley Error");
+                Log.d("JEEZ", "Volley Error in FragmentMovie/requestMovieBackdrop");
             }
         });
 
@@ -192,8 +203,11 @@ public class FragmentMovie extends Fragment {
             tvWriter.setText(Html.fromHtml("<b>Writer: </b>" + writers.get(0).getName()));
         }
 
-        //TODO improve and check cast size
-        tvCast.setText(Html.fromHtml("<b>Stars: </b>" + cast.get(0).getName() + ", " + cast.get(1).getName()+", " + cast.get(2).getName()));
+        //TODO : BUGFIX ; WE DON'T KNOW WHY
+        if(cast.size() > 2)
+        {
+            tvCast.setText(Html.fromHtml("<b>Stars: </b>" + cast.get(0).getName() + ", " + cast.get(1).getName() + ", " + cast.get(2).getName()));
+        }
 
     }
 
@@ -209,8 +223,10 @@ public class FragmentMovie extends Fragment {
         movie = new Movie(new JSONObject(response));
         requestMovieCredits(this.movieId);
 
+        tvTitle.setText(movie.getTitle());
         tvReleaseDate.setText(Html.fromHtml("<b>Release: </b>" + movie.getReleaseDate()));
-        tvOverview.setText(movie.getOverview());
+
+        tvOverview.setText(movie.getOverview() != "null" ? movie.getOverview() : NO_DESCRIPTION );
 
 
         String posterPath = movie.getPosterPath();
