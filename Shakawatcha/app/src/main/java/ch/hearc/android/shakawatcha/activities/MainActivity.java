@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.view.inputmethod.InputMethodManager;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import ch.hearc.android.shakawatcha.R;
-import ch.hearc.android.shakawatcha.fragments.FragmentNewList;
+import ch.hearc.android.shakawatcha.fragments.FragmentUserLists;
 import ch.hearc.android.shakawatcha.fragments.FragmentSearch;
 import ch.hearc.android.shakawatcha.fragments.FragmentHome;
 import ch.hearc.android.shakawatcha.fragments.movies.FragmentMovie;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity
                 tag = TAG_HOME;
                 break;
             case 1:
-                fragment = FragmentNewList.newInstance("New list");
+                fragment = FragmentUserLists.newInstance("New list");
                 tag = TAG_NEW_LIST;
                 break;
             default:
@@ -291,6 +292,14 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, fragmentMovie, TAG_MOVIE)
                 .commit();
+
+        // Hide soft keyboard if view has focus
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
     }
 
 }

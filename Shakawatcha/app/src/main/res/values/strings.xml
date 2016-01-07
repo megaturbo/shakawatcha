@@ -25,4 +25,7 @@
     <string name="newlist_input_hint">Choose wisely your list name</string>
     <string name="create">Create</string>
     <string name="new_list">New List</string>
+    <string name="title_section_playlists">Playlists</string>
+    <string name="title_section_shaker">Shaker</string>
+    <string name="cancel">Cancel</string>
 </resources>

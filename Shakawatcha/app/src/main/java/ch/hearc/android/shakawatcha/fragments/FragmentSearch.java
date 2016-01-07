@@ -44,32 +44,24 @@ public class FragmentSearch extends ListFragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                // wat
-                ArrayList<SimpleMovie> simpleMovies = SimpleMovie.convert(movies);
-                ArrayList<MovieList> userList = new ArrayList<>();
-                userList.add(new MovieList("Cool list", simpleMovies));
-                userList.add(new MovieList("Better list", simpleMovies));
-                UserLists.save(userList, getActivity().getPreferences(Context.MODE_PRIVATE));
-
                 Movie clickedMovie = movies.get(position);
-                ((MainActivity)getActivity()).showMovie(clickedMovie.getTitle(), clickedMovie.getId());
+                ((MainActivity) getActivity()).showMovie(clickedMovie.getTitle(), clickedMovie.getId());
             }
         });
     }
 
-    public static FragmentSearch newInstance(){
+    public static FragmentSearch newInstance() {
         FragmentSearch fragmentSearch = new FragmentSearch();
         return fragmentSearch;
     }
 
     public void updateMovies(ArrayList<Movie> movies) {
         this.movies.clear();
-        for(Movie m: movies){
+        for (Movie m : movies) {
             this.movies.add(m);
         }
 
-        if(adapter!=null){
+        if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
     }

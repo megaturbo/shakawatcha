@@ -32,4 +32,23 @@ public class MovieList {
             }
         }
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<SimpleMovie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<SimpleMovie> movies) {
+        this.movies = movies;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieList{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
