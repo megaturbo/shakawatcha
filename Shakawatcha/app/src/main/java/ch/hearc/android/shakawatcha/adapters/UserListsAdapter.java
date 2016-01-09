@@ -15,8 +15,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import ch.hearc.android.shakawatcha.R;
+import ch.hearc.android.shakawatcha.fragments.FragmentUserLists;
 import ch.hearc.android.shakawatcha.objects.Movie;
 import ch.hearc.android.shakawatcha.objects.utils.MovieList;
+import ch.hearc.android.shakawatcha.objects.utils.UserLists;
 
 
 /**
@@ -27,13 +29,15 @@ public class UserListsAdapter extends ArrayAdapter<MovieList> {
     Context context;
     int resource;
     ArrayList<MovieList> movieLists;
+    FragmentUserLists fragmentUserLists;
 
-    public UserListsAdapter(Context context, int resource, ArrayList<MovieList> movieLists) {
+    public UserListsAdapter(Context context, int resource, ArrayList<MovieList> movieLists, FragmentUserLists fragmentUserLists) {
         super(context, resource, movieLists);
 
         this.context = context;
         this.resource = resource;
         this.movieLists = movieLists;
+        this.fragmentUserLists = fragmentUserLists;
     }
 
     @Override
@@ -48,7 +52,7 @@ public class UserListsAdapter extends ArrayAdapter<MovieList> {
 
             holder = new MovieListHolder();
             holder.listNameTV = (TextView) row.findViewById(R.id.userlists_list_item);
-            holder.buttonDelete = (Button)row.findViewById(R.id.userlists_button_delete);
+            holder.buttonDelete = (Button) row.findViewById(R.id.userlists_button_delete);
 
             row.setTag(holder);
         } else {
@@ -61,8 +65,11 @@ public class UserListsAdapter extends ArrayAdapter<MovieList> {
         holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                Log.d("YOLO", "Delete " + ml.getName());
+                Log.d("YOLO", "List delete clicked");
+                UserLists.remove(ml, ((Activity) context).getPreferences(Context.MODE_PRIVATE));
+                if (fragmentUserLists != null) {
+                    fragmentUserLists.refreshList();
+                }
             }
         });
 

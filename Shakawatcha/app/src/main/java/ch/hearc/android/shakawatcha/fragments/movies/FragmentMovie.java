@@ -1,5 +1,6 @@
 package ch.hearc.android.shakawatcha.fragments.movies;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,14 +28,19 @@ import org.json.JSONObject;
 import java.util.List;
 
 import ch.hearc.android.shakawatcha.R;
+import ch.hearc.android.shakawatcha.fragments.DialogFragmentNewList;
+import ch.hearc.android.shakawatcha.fragments.DialogFragmentUserLists;
 import ch.hearc.android.shakawatcha.objects.Movie;
 import ch.hearc.android.shakawatcha.objects.Person.Actor;
 import ch.hearc.android.shakawatcha.objects.Person.Crew;
+import ch.hearc.android.shakawatcha.objects.utils.UserLists;
 
 /**
  * Created by thomas.roulin on 12.11.2015.
  */
 public class FragmentMovie extends Fragment {
+
+    private static final int DIALOG_FRAGMENT = 2;
 
     private ImageView ivBackdrop;
     private ImageView ivPoster;
@@ -43,6 +50,7 @@ public class FragmentMovie extends Fragment {
     private TextView tvWriter;
     private TextView tvCast;
     private TextView tvOverview;
+    private Button buttonAddToList;
 
     private Movie movie;
     private String movieTitle;
@@ -73,6 +81,17 @@ public class FragmentMovie extends Fragment {
         tvWriter = (TextView)getActivity().findViewById(R.id.movie_writer);
         tvCast = (TextView)getActivity().findViewById(R.id.movie_cast);
         tvOverview = (TextView)getActivity().findViewById(R.id.movie_overview);
+        buttonAddToList = (Button)getActivity().findViewById(R.id.movie_button_addtolist);
+
+        buttonAddToList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragmentUserLists dialog = new DialogFragmentUserLists();
+                dialog.setTargetFragment(FragmentMovie.this, DIALOG_FRAGMENT);
+                dialog.show(getFragmentManager(), getResources().getString(R.string.add_to_list));
+
+            }
+        });
 
         tvTitle.setText(this.movieTitle);
 

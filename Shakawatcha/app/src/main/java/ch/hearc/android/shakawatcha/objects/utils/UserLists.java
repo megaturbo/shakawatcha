@@ -30,8 +30,20 @@ public class UserLists {
         this.movieLists.add(movieList);
     }
 
+    public void remove(MovieList movieList){
+        this.movieLists.remove(movieList);
+    }
+
+    public void remove(int index){
+        this.movieLists.remove(index);
+    }
+
     public ArrayList<MovieList> getLists(){
         return this.movieLists;
+    }
+
+    public void setLists(ArrayList<MovieList> movieLists){
+        this.movieLists = movieLists;
     }
 
     public List<String> getListNames(){
@@ -89,5 +101,25 @@ public class UserLists {
         editPreferences.putString(PREF_USER_LISTS, userListsJSON);
         editPreferences.apply();
 
+    }
+
+    public static void remove(MovieList movieList, SharedPreferences preferences) {
+        UserLists userLists = retrieve(preferences);
+        Log.d("YOLO", "Remove method");
+        Log.d("YOLO", userLists.toString());
+        Log.d("YOLO", movieList.getName());
+
+        ArrayList<MovieList> lists = userLists.getLists();
+        for(int i = lists.size() - 1; i >= 0; i--){
+            Log.d("YOLO", "f: " + lists.get(i).getName());
+            if(lists.get(i).getName().equals(movieList.getName())){
+                userLists.remove(i);
+                Log.d("YOLO", "Removing " + i);
+            }
+        }
+        userLists.setLists(lists);
+        Log.d("YOLO", userLists.toString());
+
+        save(userLists, preferences);
     }
 }

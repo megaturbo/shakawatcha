@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,6 +12,7 @@
         android:layout_height="@dimen/movie_banner_height"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
+
 
 
     <RelativeLayout
@@ -33,28 +35,33 @@
             <TextView
                 android:id="@+id/movie_title"
                 style="@style/Shakawatcha.Movie.Text.Title"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                tools:text="Title" />
 
             <TextView
                 android:id="@+id/movie_release_date"
                 style="@style/Shakawatcha.Movie.Text"
-                android:layout_below="@id/movie_title" />
+                android:layout_below="@id/movie_title"
+                tools:text="00-00-0000" />
 
             <TextView
                 android:id="@+id/movie_director"
                 style="@style/Shakawatcha.Movie.Text"
-                android:layout_below="@id/movie_release_date" />
+                android:layout_below="@id/movie_release_date"
+                tools:text="Quentin Tarantino" />
 
             <TextView
                 android:id="@+id/movie_writer"
                 style="@style/Shakawatcha.Movie.Text"
-                android:layout_below="@id/movie_director"/>
+                android:layout_below="@id/movie_director"
+                tools:text="Donald Trump" />
 
             <TextView
                 android:id="@+id/movie_cast"
-                android:layout_marginTop="10dp"
                 style="@style/Shakawatcha.Movie.Text"
-                android:layout_below="@id/movie_writer" />
+                android:layout_below="@id/movie_writer"
+                android:layout_marginTop="10dp"
+                tools:text="Georges Clooney, Trollol, ..." />
 
 
         </RelativeLayout>
@@ -63,13 +70,23 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/movie_layout_banner"
         android:padding="10dp">
 
         <TextView
             android:id="@+id/movie_overview"
-            style="@style/Shakawatcha.Movie.Text" />
+            style="@style/Shakawatcha.Movie.Text"
+            android:textSize="20sp"
+            android:layout_alignParentTop="true"
+            tools:text="@string/lorem" />
+        <Button
+            android:id="@+id/movie_button_addtolist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:text="@string/add_to_list" />
 
     </RelativeLayout>
 

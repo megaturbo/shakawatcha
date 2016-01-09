@@ -30,7 +30,6 @@ public class DialogFragmentNewList extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         editText = (EditText) view.findViewById(R.id.newlist_edittext);
-        Log.d("YOLO", String.valueOf(editText.getHint()));
     }
 
     @NonNull

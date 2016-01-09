@@ -57,13 +57,15 @@ public class FragmentUserLists extends Fragment {
 
     }
 
-    private void refreshList(){
+    public void refreshList(){
+        Log.d("YOLO", "Fragment UserLists : refreshList()");
+
         // Get user lists
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         UserLists userLists = UserLists.retrieve(sharedPreferences);
 
         // Create the adapter with user lists
-        UserListsAdapter adapter = new UserListsAdapter(getActivity(), R.layout.fragment_userlists_item, userLists.getLists());
+        UserListsAdapter adapter = new UserListsAdapter(getActivity(), R.layout.fragment_userlists_item, userLists.getLists(), FragmentUserLists.this);
 
         // Create ListView and set the adapter
         listView = (ListView) getActivity().findViewById(R.id.userlists_listview);
