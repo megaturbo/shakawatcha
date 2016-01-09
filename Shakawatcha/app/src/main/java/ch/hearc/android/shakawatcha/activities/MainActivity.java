@@ -78,11 +78,9 @@ public class MainActivity extends AppCompatActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         //Instantiate the shake detector
-        ShakeDetector.create(this, new ShakeDetector.OnShakeListener()
-        {
+        ShakeDetector.create(this, new ShakeDetector.OnShakeListener() {
             @Override
-            public void OnShake()
-            {
+            public void OnShake() {
                 Toast.makeText(getApplicationContext(), "Device shaken!", Toast.LENGTH_SHORT).show();
                 searchRandomMovie();
             }
@@ -280,7 +278,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     private void searchMovie(String query) {
 
         if (query.length() == 0) {
@@ -328,13 +325,12 @@ public class MainActivity extends AppCompatActivity
         // Hide soft keyboard if view has focus
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    public void searchRandomMovie()
-    {
+    public void searchRandomMovie() {
 
         //Request the latest movie ID
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
@@ -346,9 +342,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onResponse(String response) {
                 try {
-
-
-
                     showMovie("---LOADING---", new Random().nextInt(new Movie(new JSONObject(response)).getId() + 1));
                 } catch (Exception e) {
                     e.printStackTrace();

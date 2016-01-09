@@ -30,25 +30,25 @@ public class UserLists {
         this.movieLists.add(movieList);
     }
 
-    public void remove(MovieList movieList){
+    public void remove(MovieList movieList) {
         this.movieLists.remove(movieList);
     }
 
-    public void remove(int index){
+    public void remove(int index) {
         this.movieLists.remove(index);
     }
 
-    public ArrayList<MovieList> getLists(){
+    public ArrayList<MovieList> getLists() {
         return this.movieLists;
     }
 
-    public void setLists(ArrayList<MovieList> movieLists){
+    public void setLists(ArrayList<MovieList> movieLists) {
         this.movieLists = movieLists;
     }
 
-    public List<String> getListNames(){
+    public List<String> getListNames() {
         List<String> listNames = new ArrayList<>();
-        for(MovieList list:this.movieLists){
+        for (MovieList list : this.movieLists) {
             listNames.add(list.getName());
         }
         return listNames;
@@ -105,20 +105,26 @@ public class UserLists {
 
     public static void remove(MovieList movieList, SharedPreferences preferences) {
         UserLists userLists = retrieve(preferences);
-        Log.d("YOLO", "Remove method");
-        Log.d("YOLO", userLists.toString());
-        Log.d("YOLO", movieList.getName());
 
         ArrayList<MovieList> lists = userLists.getLists();
-        for(int i = lists.size() - 1; i >= 0; i--){
-            Log.d("YOLO", "f: " + lists.get(i).getName());
-            if(lists.get(i).getName().equals(movieList.getName())){
+        for (int i = lists.size() - 1; i >= 0; i--) {
+            if (lists.get(i).getName().equals(movieList.getName())) {
                 userLists.remove(i);
-                Log.d("YOLO", "Removing " + i);
             }
         }
         userLists.setLists(lists);
-        Log.d("YOLO", userLists.toString());
+        save(userLists, preferences);
+    }
+
+    public static void addToList(SimpleMovie simpleMovie, String listName, SharedPreferences preferences) {
+        UserLists userLists = retrieve(preferences);
+
+        for (MovieList list :
+                userLists.movieLists) {
+            if(list.getName().equals(listName)){
+                list.add(simpleMovie);
+            }
+        }
 
         save(userLists, preferences);
     }

@@ -13,11 +13,14 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.adapters.UserListsAdapter;
+import ch.hearc.android.shakawatcha.objects.utils.MovieList;
+import ch.hearc.android.shakawatcha.objects.utils.SimpleMovie;
 import ch.hearc.android.shakawatcha.objects.utils.UserLists;
 
 /**
@@ -26,6 +29,9 @@ import ch.hearc.android.shakawatcha.objects.utils.UserLists;
 public class DialogFragmentUserLists extends DialogFragment {
 
     private ListView listView;
+
+    public static final int MOVIE_ADDED = 1;
+    public static final int MOVIE_NOT_ADDED = 2;
 
     @NonNull
     @Override
@@ -47,14 +53,23 @@ public class DialogFragmentUserLists extends DialogFragment {
     public void refreshList() {
         // Get user lists
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        UserLists userLists = UserLists.retrieve(sharedPreferences);
-        Log.d("JEEZ", userLists.toString());
+        final UserLists userLists = UserLists.retrieve(sharedPreferences);
 
         // Create the adapter with user lists
         UserListsAdapter adapter = new UserListsAdapter(getActivity(), R.layout.fragment_userlists_item_no_delete, userLists.getLists(), null);
 
-
         // set the adapter
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent();
+                i.putExtra("LIST_ID", position);
+                getActivity().setIntent(i);
+                getTargetFragment().onActivityResult(getTargetRequestCode(), MOVIE_ADDED, getActivity().getIntent());
+                DialogFragmentUserLists.this.getDialog().cancel();
+            }
+        });
     }
 }
