@@ -1,5 +1,6 @@
 package ch.hearc.android.shakawatcha.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,12 +24,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.tbouron.shakedetector.library.ShakeDetector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.fragments.FragmentUserLists;
@@ -72,6 +76,36 @@ public class MainActivity extends AppCompatActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        //Instantiate the shake detector
+        ShakeDetector.create(this, new ShakeDetector.OnShakeListener()
+        {
+            @Override
+            public void OnShake()
+            {
+                Toast.makeText(getApplicationContext(), "Device shaken!", Toast.LENGTH_SHORT).show();
+                searchRandomMovie();
+            }
+        });
+    }
+
+    /* ----- HANDLE THE DETECTION STATUS BASED ON APP STATUS ----- */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ShakeDetector.start();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ShakeDetector.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ShakeDetector.destroy();
     }
 
     @Override
@@ -243,7 +277,6 @@ public class MainActivity extends AppCompatActivity
         if (fragmentSearch.isVisible()) {
             fragmentSearch.updateMovies(movieSearchResults);
         }
-
     }
 
 
@@ -298,7 +331,38 @@ public class MainActivity extends AppCompatActivity
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
 
+    public void searchRandomMovie()
+    {
+
+        //Request the latest movie ID
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        StringBuilder queryUrl = new StringBuilder("http://api.themoviedb.org/3/movie/latest");
+        queryUrl.append("?api_key=");
+        queryUrl.append(Movie.API_KEY);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, queryUrl.toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+
+
+
+                    showMovie("---LOADING---", new Random().nextInt(new Movie(new JSONObject(response)).getId() + 1));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("JEEZ", "Volley Error in MainActivity/searchRandomMovie");
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
 }
