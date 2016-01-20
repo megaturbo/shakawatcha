@@ -1,7 +1,9 @@
 package ch.hearc.android.shakawatcha.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,18 +11,20 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 
 import ch.hearc.android.shakawatcha.R;
+import ch.hearc.android.shakawatcha.activities.ActivityMovieList;
 import ch.hearc.android.shakawatcha.activities.MainActivity;
 import ch.hearc.android.shakawatcha.adapters.UserListsAdapter;
 import ch.hearc.android.shakawatcha.objects.utils.MovieList;
@@ -33,6 +37,8 @@ public class FragmentUserLists extends Fragment {
 
     private static final int DIALOG_FRAGMENT = 1;
     private ListView listView;
+    private ArrayList<MovieList> userLists;
+    private int selectedListIndex = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,10 +47,29 @@ public class FragmentUserLists extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         listView = (ListView) getActivity().findViewById(R.id.userlists_listview);
+
+        // Menu on long click for delete list
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedListIndex = position;
+                PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+                MenuInflater inflater = getActivity().getMenuInflater();
+                inflater.inflate(R.menu.movielist, popupMenu.getMenu());
+                popupMenu.show();
+                return true;
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -56,7 +81,7 @@ public class FragmentUserLists extends Fragment {
 
         refreshList();
 
-        Button buttonCreate = (Button)getActivity().findViewById(R.id.userlists_button_create);
+        Button buttonCreate = (Button) getActivity().findViewById(R.id.userlists_button_create);
         buttonCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,19 +93,18 @@ public class FragmentUserLists extends Fragment {
 
     }
 
-    public void refreshList(){
+    public void refreshList() {
         // Get user lists
-        UserLists userLists = UserLists.retrieve(getActivity());
+        userLists = UserLists.retrieve(getActivity()).getLists();
 
         // Create the adapter with user lists
-        UserListsAdapter adapter = new UserListsAdapter(getActivity(), R.layout.fragment_userlists_item, userLists.getLists(), FragmentUserLists.this);
+        UserListsAdapter adapter = new UserListsAdapter(getActivity(), R.layout.fragment_userlists_item, userLists, FragmentUserLists.this);
 
         // Create ListView and set the adapter
         listView.setAdapter(adapter);
     }
 
-    public void createNewList(String listName){
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+    public void createNewList(String listName) {
         UserLists userLists = UserLists.retrieve(getActivity());
         userLists.add(new MovieList(listName));
         UserLists.save(userLists, getActivity());
@@ -90,16 +114,23 @@ public class FragmentUserLists extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case DIALOG_FRAGMENT:
-                if(resultCode == Activity.RESULT_OK){
+                if (resultCode == Activity.RESULT_OK) {
                     String listName = data.getStringExtra("LIST_NAME");
                     createNewList(listName);
-                }else if (resultCode == Activity.RESULT_CANCELED){
+                } else if (resultCode == Activity.RESULT_CANCELED) {
                     Log.d("YOLO", "CANCEL");
                 }
                 break;
         }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshList();
     }
 
     @Override

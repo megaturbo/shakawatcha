@@ -1,32 +1,21 @@
-package ch.hearc.android.shakawatcha.fragments;
+package ch.hearc.android.shakawatcha.activities;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.adapters.MovieAdapter;
-import ch.hearc.android.shakawatcha.objects.Movie;
 import ch.hearc.android.shakawatcha.objects.utils.MovieList;
-import ch.hearc.android.shakawatcha.objects.utils.SimpleMovie;
 import ch.hearc.android.shakawatcha.objects.utils.UserLists;
 
 /**
@@ -74,13 +63,41 @@ public class ActivityMovieList extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                finish();
                 return true;
             case R.id.menu_delete_movie:
 //                UserLists.removeFromList()
                 return true;
+            case R.id.action_remove_list:
+
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                UserLists.remove(movieList, ActivityMovieList.this);
+                                finish();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.movielist, menu);
+        return true;
     }
 }
