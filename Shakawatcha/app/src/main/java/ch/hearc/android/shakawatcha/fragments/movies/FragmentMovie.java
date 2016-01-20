@@ -110,12 +110,11 @@ public class FragmentMovie extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode){
             case DIALOG_FRAGMENT:
-                UserLists userLists = UserLists.retrieve(getActivity().getPreferences(Context.MODE_PRIVATE));
+                UserLists userLists = UserLists.retrieve(getActivity());
                 MovieList list = userLists.getLists().get(data.getIntExtra("LIST_ID", 0));
-                SimpleMovie simpleMovie = new SimpleMovie(movieId, movieTitle);
-                UserLists.addToList(simpleMovie, list.getName(), getActivity().getPreferences(Context.MODE_PRIVATE));
+                UserLists.addToList(movie, list.getName(), getActivity());
 
-                Toast.makeText(getContext(), simpleMovie.getName() + " successfuly added to " + list.getName(), Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(), movie.getTitle() + " successfuly added to " + list.getName(), Toast.LENGTH_SHORT).show();
         }
     }
 

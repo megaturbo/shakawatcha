@@ -1,6 +1,8 @@
 package ch.hearc.android.shakawatcha.objects.utils;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -30,6 +32,10 @@ public class UserLists {
         this.movieLists.add(movieList);
     }
 
+    public MovieList get(int index){
+        return this.movieLists.get(index);
+    }
+
     public void remove(MovieList movieList) {
         this.movieLists.remove(movieList);
     }
@@ -57,12 +63,12 @@ public class UserLists {
     /**
      * Retrieve User Lists from SharedPrefrences
      *
-     * @param sharedPreferences Where to retrieve
      * @return The User Lists
      */
-    public static UserLists retrieve(SharedPreferences sharedPreferences) {
+    public static UserLists retrieve(Context context) {
 
         // Retrieve User preferences data
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String userListsJSON = sharedPreferences.getString(PREF_USER_LISTS, "");
 
         // If SharedPreference does not exist
@@ -73,6 +79,8 @@ public class UserLists {
         // Create Object from JSON
         Gson gson = new Gson();
         UserLists userLists = gson.fromJson(userListsJSON, UserLists.class);
+
+        Log.d("SKW", "Userlists retrieved, count: " + userLists.movieLists.size());
 
         return userLists;
     }
@@ -88,23 +96,23 @@ public class UserLists {
      * Save User Lists to SharedPreferencse
      *
      * @param userLists         ArrayList of user's MovieLists
-     * @param sharedPreferences Where to save
      */
-    public static void save(UserLists userLists, SharedPreferences sharedPreferences) {
+    public static void save(UserLists userLists, Context context) {
 
         // Create JSON representation of UserLists
         Gson gson = new Gson();
         String userListsJSON = gson.toJson(userLists);
 
         // Save it in SharedPreferences (apply() does it in background)
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editPreferences = sharedPreferences.edit();
         editPreferences.putString(PREF_USER_LISTS, userListsJSON);
         editPreferences.apply();
 
     }
 
-    public static void remove(MovieList movieList, SharedPreferences preferences) {
-        UserLists userLists = retrieve(preferences);
+    public static void remove(MovieList movieList, Context context) {
+        UserLists userLists = retrieve(context);
 
         ArrayList<MovieList> lists = userLists.getLists();
         for (int i = lists.size() - 1; i >= 0; i--) {
@@ -113,19 +121,19 @@ public class UserLists {
             }
         }
         userLists.setLists(lists);
-        save(userLists, preferences);
+        save(userLists, context);
     }
 
-    public static void addToList(SimpleMovie simpleMovie, String listName, SharedPreferences preferences) {
-        UserLists userLists = retrieve(preferences);
+    public static void addToList(Movie movie, String listName, Context context) {
+        UserLists userLists = retrieve(context);
 
         for (MovieList list :
                 userLists.movieLists) {
             if(list.getName().equals(listName)){
-                list.add(simpleMovie);
+                list.add(movie);
             }
         }
 
-        save(userLists, preferences);
+        save(userLists, context);
     }
 }

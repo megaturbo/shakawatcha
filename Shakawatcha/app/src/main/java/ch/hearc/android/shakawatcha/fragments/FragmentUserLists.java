@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +44,16 @@ public class FragmentUserLists extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        listView = (ListView) getActivity().findViewById(R.id.userlists_listview);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getActivity(), ActivityMovieList.class);
+                i.putExtra(ActivityMovieList.ARG_MOVIE_LIST_ID, position);
+                startActivity(i);
+            }
+        });
+
         refreshList();
 
         Button buttonCreate = (Button)getActivity().findViewById(R.id.userlists_button_create);
@@ -58,25 +69,21 @@ public class FragmentUserLists extends Fragment {
     }
 
     public void refreshList(){
-        Log.d("YOLO", "Fragment UserLists : refreshList()");
-
         // Get user lists
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        UserLists userLists = UserLists.retrieve(sharedPreferences);
+        UserLists userLists = UserLists.retrieve(getActivity());
 
         // Create the adapter with user lists
         UserListsAdapter adapter = new UserListsAdapter(getActivity(), R.layout.fragment_userlists_item, userLists.getLists(), FragmentUserLists.this);
 
         // Create ListView and set the adapter
-        listView = (ListView) getActivity().findViewById(R.id.userlists_listview);
         listView.setAdapter(adapter);
     }
 
     public void createNewList(String listName){
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        UserLists userLists = UserLists.retrieve(sharedPreferences);
+        UserLists userLists = UserLists.retrieve(getActivity());
         userLists.add(new MovieList(listName));
-        UserLists.save(userLists, sharedPreferences);
+        UserLists.save(userLists, getActivity());
 
         refreshList();
     }

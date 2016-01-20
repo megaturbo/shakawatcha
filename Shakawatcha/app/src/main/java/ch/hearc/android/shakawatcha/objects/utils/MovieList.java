@@ -3,30 +3,32 @@ package ch.hearc.android.shakawatcha.objects.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.hearc.android.shakawatcha.objects.Movie;
+
 /**
  * Created by thomas.roulin on 30.11.2015.
  */
 public class MovieList {
 
     private String name;
-    private List<SimpleMovie> movies;
+    private ArrayList<Movie> movies;
 
     public MovieList(String name) {
         this.name = name;
         this.movies = new ArrayList<>();
     }
 
-    public MovieList(String name, ArrayList<SimpleMovie> movies) {
+    public MovieList(String name, ArrayList<Movie> movies) {
         this.name = name;
         this.movies = movies;
     }
 
-    public void add(SimpleMovie movie) {
+    public void add(Movie movie) {
         this.movies.add(movie);
     }
 
     public void remove(int movieId) {
-        for (SimpleMovie movie : this.movies) {
+        for (Movie movie : this.movies) {
             if (movie.getId() == movieId) {
                 this.movies.remove(movie);
             }
@@ -37,11 +39,11 @@ public class MovieList {
         return name;
     }
 
-    public List<SimpleMovie> getMovies() {
+    public ArrayList<Movie> getMovies() {
         return movies;
     }
 
-    public void setMovies(List<SimpleMovie> movies) {
+    public void setMovies(ArrayList<Movie> movies) {
         this.movies = movies;
     }
 

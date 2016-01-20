@@ -2,21 +2,20 @@ package ch.hearc.android.shakawatcha.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ch.hearc.android.shakawatcha.R;
 import ch.hearc.android.shakawatcha.fragments.FragmentUserLists;
-import ch.hearc.android.shakawatcha.objects.Movie;
 import ch.hearc.android.shakawatcha.objects.utils.MovieList;
 import ch.hearc.android.shakawatcha.objects.utils.UserLists;
 
@@ -51,7 +50,8 @@ public class UserListsAdapter extends ArrayAdapter<MovieList> {
             row = inflater.inflate(resource, parent, false);
 
             holder = new MovieListHolder();
-            holder.listNameTV = (TextView) row.findViewById(R.id.userlists_list_item);
+            holder.listNameTV = (TextView) row.findViewById(R.id.userlists_list_item_listname);
+            holder.listSizeTV = (TextView) row.findViewById(R.id.userlists_list_item_number_movies);
             holder.buttonDelete = (Button) row.findViewById(R.id.userlists_button_delete);
 
             row.setTag(holder);
@@ -61,23 +61,44 @@ public class UserListsAdapter extends ArrayAdapter<MovieList> {
 
 
         final MovieList ml = movieLists.get(position);
-        holder.listNameTV.setText(ml.getName() + " (" + ml.getMovies().size() + " movies)");
-        holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("YOLO", "List delete clicked");
-                UserLists.remove(ml, ((Activity) context).getPreferences(Context.MODE_PRIVATE));
-                if (fragmentUserLists != null) {
-                    fragmentUserLists.refreshList();
-                }
-            }
-        });
+        holder.listNameTV.setText(ml.getName());
+        holder.listSizeTV.setText(ml.getMovies().size() + " movies");
+
+        // Delete listener
+//        holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        switch (which) {
+//                            case DialogInterface.BUTTON_POSITIVE:
+//                                UserLists.remove(ml, ((Activity) context).getPreferences(Context.MODE_PRIVATE));
+//                                if (fragmentUserLists != null) {
+//                                    fragmentUserLists.refreshList();
+//                                }
+//                                Toast.makeText(context, ml.getName() + " has been removed.", Toast.LENGTH_LONG).show();
+//                                break;
+//
+//                            case DialogInterface.BUTTON_NEGATIVE:
+//                                break;
+//                        }
+//                    }
+//                };
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+//                        .setNegativeButton("No", dialogClickListener).show();
+//
+//            }
+//        });
 
         return row;
     }
 
     static class MovieListHolder {
         TextView listNameTV;
+        TextView listSizeTV;
         Button buttonDelete;
     }
 }

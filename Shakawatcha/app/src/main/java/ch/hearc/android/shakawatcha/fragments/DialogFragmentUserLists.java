@@ -52,8 +52,7 @@ public class DialogFragmentUserLists extends DialogFragment {
 
     public void refreshList() {
         // Get user lists
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        final UserLists userLists = UserLists.retrieve(sharedPreferences);
+        final UserLists userLists = UserLists.retrieve(getActivity());
 
         // Create the adapter with user lists
         UserListsAdapter adapter = new UserListsAdapter(getActivity(), R.layout.fragment_userlists_item_no_delete, userLists.getLists(), null);

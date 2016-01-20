@@ -79,7 +79,7 @@ public class NavigationDrawerFragment extends Fragment {
         selectItem(mCurrentSelectedPosition);
     }
 
-    public int getCurrentSelectedPosition(){
+    public int getCurrentSelectedPosition() {
         return mCurrentSelectedPosition;
     }
 
